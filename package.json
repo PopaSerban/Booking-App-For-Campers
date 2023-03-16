@@ -2,7 +2,7 @@
   "name": "campingbooking",
   "version": "1.0.0",
   "description": "Booking application for campers",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
