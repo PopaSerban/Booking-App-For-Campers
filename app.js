@@ -22,10 +22,9 @@ app.get('/', (req, res) => {
     console.log('hello from camping app!');
     res.render('home');
 });
-app.get('/campground', async (req, res) => {
-    const camp  =  new Campground({title: 'New Campground', description:'ssssss'});
-    await camp.save();
-    res.send(camp);
-});
+app.get('/campgrounds', async (req, res)=> {
+    const campgrounds = await Campground.find({});
+    res.render('campgrounds/index', {campgrounds: campgrounds});
+})  
 
 app.listen(3000, () => console.log('Listening on port 3000'));
