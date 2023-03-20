@@ -3,6 +3,7 @@ const path = require('path');
 
 const mongoose = require('mongoose');
 const Campground = require('./models/campground');
+const methodOveride = require('method-override');
 
 
 mongoose.connect('mongodb://localhost:27017/campBooking', { 
@@ -19,6 +20,7 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.urlencoded({ extended: true}));
+app.use(methodOveride('_method'));
 
 app.get('/', (req, res) => {
     console.log('hello from camping app!');
@@ -41,6 +43,15 @@ app.post('/campgrounds', async (req,res) => {
 app.get('/campgrounds/:id', async (req, res) => {
     const campground = await Campground.findById(req.params.id);
     res.render('campgrounds/show', {campground: campground});
+});
+app.get('/campgrounds/:id/edit', async (req, res) => {
+    const campground = await Campground.findById(req.params.id);
+    res.render('campgrounds/edit', {campground: campground});
+});
+app.put('/campgrounds/:id', async (req, res) => {
+    const { id } = req.params;
+    await Campground.findByIdAndUpdate(id, {...req.body.campground});
+    res.redirect(`/campgrounds/${id}`);
 });
 
 app.listen(3000, () => console.log('Listening on port 3000'));
