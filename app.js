@@ -7,8 +7,9 @@ const ejsMate = require('ejs-mate');
 const catchAsync = require('./utils/CatchAsync');
 const ExpressError = require('./utils/ExpressError');
 const Campground = require('./models/campground');
+const Review = require('./models/review');
 const methodOveride = require('method-override');
-const { validate } = require('./models/campground');
+// const { validate } = require('./models/campground');
 
 
 mongoose.connect('mongodb://localhost:27017/campBooking', { 
@@ -70,6 +71,15 @@ app.delete('/campgrounds/:id', catchAsync(async (req, res) => {
     const { id } = req.params;
     await Campground.findByIdAndDelete(id);
     res.redirect('/campgrounds');
+}));
+
+app.post('/campgrounds/:id/reviews', catchAsync(async (req, res)=>{
+   const campground = await Campground.findById({_id: req.params.id})
+   const review = new Review(req.body.review);
+   campground.reviews.push(review);
+   await review.save();
+   await campground.save();
+   res.redirect(`/campgrounds/${campground._id}`);
 }));
 
 app.all('*',(req, res, next) => {
