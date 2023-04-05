@@ -1,7 +1,6 @@
 const express = require('express');
 const path = require('path');
 
-const Joi = require('joi');
 const mongoose = require('mongoose');
 const {campgroundSchema} = require('./schemas');
 const ejsMate = require('ejs-mate');
